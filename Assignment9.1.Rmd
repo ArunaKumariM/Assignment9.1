@@ -1,0 +1,88 @@
+---
+title: "AS"
+author: "Aruna"
+date: "28 November 2018"
+output: word_document
+---
+```{r}
+# Assignment 9.1
+
+#1. If Z is norm (mean = 0, sd=1)
+#      Find P(Z>2.64)
+
+pnorm(2.64,0,1,lower.tail = FALSE)
+# we can also use standard normal distribution
+pnorm(2.64,lower.tail = FALSE)
+
+
+#      Find P(|Z| > 1.39)
+
+#  P(-1.39<X<1.39)  = P(X<1.39) - P(X<-1.39)
+pnorm(1.39,0,1) - pnorm(-1.39,0,1)
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#2. Suppose p the proportion of students who are admitted to the graduate school
+#   of the University of California at Berkeley, and suppose that a public relation
+#   officer boasts that UCB has historically had a 40% acceptance rate for its graduate
+#   school. Consider the data stored in the table UCBAdmissions from 1973. Ässuming
+#   these observations constituted a simple random sample, are they consistent with the
+#   officerâ..s claim, or do they provide evidence that the acceptance
+#   rate was significantly less than 40%?
+#   Use an It 0.01 significance level
+
+
+# Hypothesis
+# H0 : p = 0.4 and 
+# H1 : p < 0.4. 
+
+# P - 0.4 / sqrt(0.4(1-0.4)/n)
+#Significance Level to be used is alpha = 0.01
+
+View(UCBAdmissions)
+
+dfUCB = as.data.frame(UCBAdmissions)
+
+dim(dfUCB)
+head(dfUCB)
+
+#check the total frequency of admission
+xtabs(Freq ~Admit, data = dfUCB)
+
+#calculate the Z value for alpha = 0.01
+qnorm(0.99) 
+#2.32 for 0.99 so for 0.01 it will be -2.32
+
+AdmitRate = 1755/(1755+2771)
+TestStatistic = (AdmitRate-0.4)/sqrt(0.4*0.6/(1755+2771))
+if(TestStatistic < -1*pnorm(0.99)){
+  print("Reject NULL hypothesis :UCB has historically had a 40% acceptance rate for its graduate school is correct for alpha 0.01") 
+ } else print("UCB has historically had a 40% acceptance rate for its graduate school isn not correct for alpha 0.01")
+ 
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
